@@ -386,6 +386,70 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 
+### 6.3 ⏱️ 포지션 감시 및 하이브리드 청산 워크플로우  
+
+| 구성 |
+|---|
+| <img width="1088" height="509" alt="image" src="https://github.com/user-attachments/assets/49ba24ac-5f72-41c1-b677-2a6068f5e960" />  |
+
+본 워크플로우는 **1분 주기로 업비트 실제 잔고와 DB 장부를 동기화(Sync)** 하며,  
+**자동 매매 포지션은 TP/SL 조건에 따라 청산**하고,  
+**수동 매매 포지션은 감지/추적만 수행**하는 하이브리드 운영 루프이다.  
+
+또한 실거래 제약(최소 주문금액 5,000원)을 반영하여  
+조건 충족 시에만 매도 주문을 수행하도록 설계하였다.
+
+---
+
+#### 🎯 목적
+- **실시간 포지션 감시** (가격/수익률/평가손익 계산)
+- **자동매매 포지션 청산** (TP/SL 도달 시 시장가 매도)
+- **수동매매 이벤트 감지** (수동 매수/매도 발생 시 상태 동기화)
+- **Slack 알림**을 통해 운영 가시성 확보
+
+---
+
+#### 🔄 주요 흐름
+- **Interval Trigger (1분)** 로 워크플로우 주기 실행
+- **Upbit Accounts**(실제 잔고) 조회 + **Read Positions**(DB 장부) 조회
+- **Sync Logic**을 통해 포지션을 3가지로 분류
+  - `newBuys` : 업비트엔 있으나 DB에 없는 **수동 매수 감지**
+  - `manualSells` : DB엔 있으나 업비트에 없는 **수동 매도 감지**
+  - `activePositions` : 계속 감시할 보유 포지션
+- `activePositions`에 대해 **Upbit 시세 조회**
+- **자동/수동 포지션 구분**
+  - `tp_price`와 `sl_price`가 0이면 → **수동 관리**(KEEP)
+  - 그 외 → **자동 관리**(TP/SL 조건 판단)
+- TP/SL 도달 + **주문금액 ≥ 5,000원**이면 시장가 매도 실행
+- 주문 결과를 DB에 반영하고 Slack으로 결과 알림
+
+---
+
+#### 🧩 주요 노드 설명
+
+| 노드 | 설명 |
+|------|------|
+| **Interval Trigger (1min)** | 포지션 감시 루프를 주기적으로 실행 |
+| **Upbit Accounts** | 업비트 실제 잔고 조회(현실 상태) |
+| **Read Positions (DB)** | DB에 저장된 포지션 장부 조회(시스템 상태) |
+| **Sync Logic (Code)** | 업비트 잔고 vs DB를 비교하여 `newBuys / manualSells / activePositions`로 분류 |
+| **Upbit Market (Ticker)** | `activePositions` 대상 실시간 시세 조회 |
+| **Code (자동/수동 판별 + TP/SL 판단)** | `tp_price/sl_price` 기반 자동/수동 포지션 구분, TP/SL + 최소주문금액(5,000원) 검증 |
+| **JWT Generator (Sell)** | 업비트 주문용 `query_hash` 포함 JWT 생성 (시장가 매도용) |
+| **HTTP Request (Sell Order)** | 실제 시장가 매도 주문 실행 |
+| **Insert Exit Order / Close Position** | 청산 주문 기록 및 포지션 상태 전이 |
+| **Slack Send Message** | 감시/청산/예외 상황을 Slack으로 알림 |
+
+---
+
+#### ✨ 설계 포인트
+- **현실 상태(업비트) ↔ 시스템 상태(DB)** 를 비교하는 *장부 동기화 기반 운영*
+- `tp_price=0 && sl_price=0` 규칙으로 **수동 포지션을 자동 청산에서 제외**
+- 최소 주문금액 5,000원 규칙을 반영해 **불필요한 주문 실패를 사전에 차단**
+- 수동 매수/매도도 감지하여 **운영 중 발생하는 예외 흐름을 흡수**
+
+---
+
 ## 6. 🚨 트러블슈팅 (Troubleshooting)
 
 ## 🛠️ TradingBot 프로젝트 트러블슈팅 요약
