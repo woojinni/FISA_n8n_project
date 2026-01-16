@@ -363,8 +363,19 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 
+## 6. 🚨 트러블슈팅 (Troubleshooting)
 
+## 🛠️ TradingBot 프로젝트 트러블슈팅 요약 (7 Cases)
 
+| 트러블 종류 | 문제 현상 | 근본 원인 | 해결 방법 |
+|---|---|---|---|
+| **네트워크 인증** | Upbit API `401 Unauthorized`<br>`This is not a verified IP` | Cloud Run의 **유동 Outbound IP**로 인해 업비트에 등록된 IP와 불일치 | **Serverless VPC Connector + Cloud NAT** 구성 → Outbound IP 고정 후 업비트 콘솔에 등록 |
+| **API 인증 (JWT)** | `/v1/accounts` 호출 시 `invalid_access_key` | Upbit Private API는 단순 API Key가 아닌 **JWT(access_key, nonce, query_hash)** 필수 | Code Node에서 **요청마다 JWT 생성** + GCP Secret Manager로 키 주입 |
+| **n8n 보안 정책** | `access to env vars denied` | n8n v1.x 이상에서 **Code Node의 env 접근 기본 차단** | `N8N_BLOCK_ENV_ACCESS_IN_NODE=false` 설정으로 명시적 허용 |
+| **심볼 데이터 오류** | `404 Code not found`<br>`KRW-KRW-ETH` | 종목 코드 보정 로직 중복 적용으로 **접두사 중복** | `symbol.startsWith("KRW-") ? symbol : "KRW-"+symbol` 정규화 로직 단일화 |
+| **주문 로직 오류** | Slack은 “손절 완료”, 실제 계좌에는 코인 잔존 (유령 매도) | **업비트 최소 주문 금액(5,000원)** 미달 주문 거절을 확인하지 않고 DB 상태만 변경 | `OrderValue = price × qty` 검증 후 5,000원 미만이면 `KEEP` 유지 + 수동 매도 알림 |
+| **워크플로우 중단** | DB에 감시 종목 없을 때 전체 플로우 중단 | n8n은 **노드 결과가 없으면(No output)** 워크플로우 중단 | DB 조회 노드에 **Always Output Data** 옵션 활성화 |
+| **인터페이스/알림** | Slack 메시지에 종목명·평단가·수량이 빈칸 | `upbit market` 노드가 이전 DB 데이터를 **덮어씀** | 최종 Code Node에서 `$("Item Lists(activePositions)").item.json`로 이전 노드 데이터 명시적 참조 |
 
 ## 7. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
 
