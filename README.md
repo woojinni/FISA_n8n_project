@@ -252,7 +252,116 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 
-<br>
+## 6. 🔄 핵심 워크플로우 설계 (Core Workflow Design)
+
+본 시스템은 기능 단위로 분리된 다수의 n8n 워크플로우를 통해
+제안 생성 → 승인 → 주문 실행 → 포지션 감시 → 사용자 상호작용의 전 과정을 처리한다.
+
+---
+
+### 6.1 💬 AI 기반 트레이딩 챗봇 워크플로우  
+
+| 구성 |
+|---|
+| <img width="680" height="469" alt="image" src="https://github.com/user-attachments/assets/f503e996-f18b-4585-83b6-776abc318aa3" /> |
+
+
+#### 🎯 목적
+Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,  
+**실시간 시장 정보 조회**, **포지션 상태 확인**, **전략 관련 질의 응답**을 제공하는  
+**AI 보조 트레이딩 인터페이스**를 구현한다.
+
+#### 🔄 주요 흐름
+- **Slack Trigger**를 통해 사용자 메시지 수신  
+- **GPT 기반 AI Agent** 호출을 통한 의도 파악 및 응답 생성  
+- 필요 시 **외부 도구(API, DB)** 를 활용한 정보 조회  
+- 생성된 응답을 **Slack 메시지로 반환**  
+- 대화 이력을 **Chat Memory DB에 저장**하여 컨텍스트 유지  
+
+#### 🧩 중요 노드
+- **Slack Trigger**  
+  → 사용자 메시지 수신 및 워크플로우 진입점  
+- **AI Agent (GPT)**  
+  → 자연어 이해, 전략 해석, Tool Calling 수행  
+- **Chat Memory DB**  
+  → 이전 대화 컨텍스트 저장 및 연속성 유지  
+- **HTTP Request (Upbit API)**  
+  → 실시간 시세 및 시장 데이터 조회  
+
+---
+
+### 6.2 📄 투자 제안 생성 워크플로우  
+
+본 워크플로우는 **투자 제안서(Draft)를 생성하고 사용자에게 전달**하기까지의 과정을 담당한다.  
+가독성과 책임 분리를 위해 **두 개의 워크플로우로 분리**되어 있으며,  
+각각은 명확한 역할을 가진다.
+
+---
+
+#### 6.2.1 워크플로우 구성 개요
+
+| 구분 | 역할 |
+|---|---|
+| **Workflow 1** | 사용자 입력 수신 및 투자 제안서(Draft) 생성 |
+| **Workflow 2** | Draft 기반 승인 처리 및 실제 주문 실행 준비 |
+
+---
+
+🔹 Workflow 1 – 투자 제안서 생성 및 알림
+
+| 구성 |
+|---|
+| <img width="523" height="340" alt="image" src="https://github.com/user-attachments/assets/3bbec077-0d9f-42c1-99a1-088ec0c8eec0" /> |
+
+#### 🎯 목적
+사용자의 입력값을 기반으로  
+**매매 조건을 정리한 투자 제안서(Draft)** 를 생성하고  
+이를 **Slack을 통해 사용자에게 전달**한다.
+
+#### 🧩 주요 노드 설명
+
+| 노드 | 역할 |
+|---|---|
+| **Webhook** | 외부 요청 진입점 (자산, 예산, 리스크 조건 수신) |
+| **Code (Slack 입력값 파싱)** | Slack Payload 파싱 및 입력값 정규화 |
+| **Code (Draft 파라미터 생성)** | 익절/손절 비율 계산 및 Draft 데이터 구성 |
+| **Execute SQL (Draft 저장)** | `draft_proposals` 테이블에 제안서 저장 |
+| **Slack Post Message** | 생성된 투자 제안서 요약을 사용자에게 전송 |
+
+> ✔️ 이 단계에서는 **실제 거래는 발생하지 않으며**,  
+> 사용자는 제안 내용을 확인만 한다.
+
+---
+
+🔹 Workflow 2 – Draft 승인 처리 및 주문 준비
+
+| 구성 |
+|---|
+| <img width="934" height="536" alt="image" src="https://github.com/user-attachments/assets/8397242a-7b9c-465c-9053-489ab9b59ae4" />  |
+
+#### 🎯 목적
+사용자의 승인/거절 액션을 처리하고,  
+**승인된 Draft에 한해 주문 실행 단계로 진입**한다.
+
+#### 🧩 주요 노드 설명
+
+| 노드 | 역할 |
+|---|---|
+| **Respond to Webhook** | Slack Interactive Button 이벤트 수신 |
+| **Lock Draft (PROCESSING)** | Draft 상태 잠금 (중복 실행 방지) |
+| **Get Draft** | 승인 대상 Draft 정보 조회 |
+| **IF (승인 / 거절 분기)** | 사용자 의사에 따른 흐름 분기 |
+| **HTTP Request (Upbit 시세 조회)** | 주문 전 최신 시세 확인 |
+| **HTTP Request (Upbit 주문 API)** | 실제 매수 주문 실행 |
+| **Insert Order** | 주문 이력 저장 |
+| **Finalize Draft** | Draft 상태 EXECUTED로 변경 |
+| **Create Position Record** | 포지션 감시용 데이터 생성 |
+| **Slack 메시지 전송** | 승인 결과 및 주문 결과 사용자 알림 |
+
+> ✔️ **명시적 사용자 승인 없이는 주문이 실행되지 않도록 설계**되어 있으며,  
+> Draft 잠금 로직을 통해 **Idempotency**를 보장한다.
+
+---
 
 
 
