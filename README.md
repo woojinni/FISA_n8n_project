@@ -450,7 +450,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 
-## 6. 🚨 트러블슈팅 (Troubleshooting)
+## 7. 🚨 트러블슈팅 (Troubleshooting)
 
 ## 🛠️ TradingBot 프로젝트 트러블슈팅 요약
 
@@ -464,7 +464,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 | **워크플로우 중단** | DB에 감시 종목 없을 때 전체 플로우 중단 | n8n은 **노드 결과가 없으면(No output)** 워크플로우 중단 | DB 조회 노드에 **Always Output Data** 옵션 활성화 |
 | **인터페이스/알림** | Slack 메시지에 종목명·평단가·수량이 빈칸 | `upbit market` 노드가 이전 DB 데이터를 **덮어씀** | 최종 Code Node에서 `$("Item Lists(activePositions)").item.json`로 이전 노드 데이터 명시적 참조 |
 
-## 7. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
+## 8. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
 
 <img width="2752" height="1536" alt="향후 및 개선사항" src="https://github.com/user-attachments/assets/b7b26d62-89fa-4e60-95e3-f46401dec1ec" />
 
@@ -475,7 +475,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 * **손실 데이터 학습:** 매매 결과를 기록하고 손실이 컸던 종목은 추천에서 제외하도록 로직을 개선한다.
 * **웹 관리 페이지:** 자산 변동 추이를 차트로 확인하고 시스템을 직접 조작할 수 있는 전용 웹사이트를 만든다.
 
-## 8. 용어 사전
+## 9. 용어 사전
 
 ## 📘 용어 사전 (Glossary)
 
