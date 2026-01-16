@@ -165,6 +165,56 @@ n8n을 활용한 워크플로우 자동화가
 | `status` | STRING | 체결 상태 (FILLED, NEW, CANCELED 등) |
 
 
+## 5. ⚙️ 운영 환경 변수 설정 (Runtime Environment Configuration)
+
+본 시스템은 GCP(Google Cloud Platform) 인프라를 기반으로 보안성과 확장성을 최우선으로 설계되었다.
+모든 민감 정보는 코드와 분리되어 관리된다.
+
+특히 API Key, DB 비밀번호 등 민감 정보는  
+컨테이너 내부에 직접 포함하지 않고 **GCP Secret Manager**를 통해 런타임에 주입된다.
+
+---
+
+### 5.1 🔑 주요 환경 변수 요약
+
+| 구분 | 환경 변수 | 설명 |
+|---|---|---|
+| n8n 기본 | `N8N_PORT` | n8n 서비스 포트 (Cloud Run: 5678) |
+|  | `N8N_PROTOCOL` | HTTPS 강제 설정 |
+|  | `N8N_HOST` | Cloud Run 서비스 도메인 |
+| 데이터베이스 | `DB_TYPE` | PostgreSQL 사용 |
+|  | `DB_POSTGRESDB_HOST` | Cloud SQL Unix Socket 경로 |
+|  | `DB_POSTGRESDB_PORT` | PostgreSQL 포트 (5432) |
+|  | `DB_POSTGRESDB_DATABASE` | n8n 메타데이터 DB |
+|  | `DB_POSTGRESDB_USER` | DB 사용자 계정 |
+|  | `DB_POSTGRESDB_SCHEMA` | public 스키마 |
+| 보안 | `N8N_ENCRYPTION_KEY` | n8n 내부 자격 증명 암호화 키 |
+|  | `N8N_BLOCK_ENV_ACCESS_IN_NODE` | 노드 내부 env 직접 접근 차단 |
+| 노드 실행 | `NODE_FUNCTION_ALLOW_EXTERNAL` | 외부 라이브러리 허용 (jsonwebtoken, uuid) |
+|  | `NODE_FUNCTION_ALLOW_BUILTIN` | Node.js 내장 모듈 허용 범위 |
+| 운영 | `GENERIC_TIMEZONE` | UTC 기준 통일 |
+|  | `QUEUE_HEALTH_CHECK_ACTIVE` | 워크플로우 큐 헬스체크 활성화 |
+
+---
+
+### 5.2 🔐 Secret Manager 연동 항목
+
+| Secret 이름 | 사용 목적 |
+|---|---|
+| `DB_POSTGRESDB_PASSWORD` | PostgreSQL 접속 비밀번호 |
+| `N8N_ENCRYPTION_KEY` | n8n 자격 증명 암호화 |
+| `UPBIT_ACCESS_KEY` | 업비트 API Access Key |
+| `UPBIT_SECRET_KEY` | 업비트 API Secret Key |
+
+> 모든 Secret은 **환경 변수로만 주입**되며,  
+> 워크플로우 및 코드 상에 직접 노출되지 않는다.
+
+---
+
+<br>
+
+
+
 
 ## 한계 및 향후 개선 사항 (Limitations & Future Improvements)
 프로젝트의 지속적인 발전과 고도화를 위해 다음과 같은 기능을 추가로 구현할 계획입니다.
