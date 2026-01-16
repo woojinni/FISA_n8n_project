@@ -366,11 +366,10 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 
 
-## 7. 한계 및 향후 개선 사항 (Limitations & Future Improvements)
+## 7. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
 
-<p align="center">
-  <img src="./images/future_plan.png" alt="AI 투자 시스템 현황 및 개선 계획" width="100%">
-</p>
+<img width="2752" height="1536" alt="향후 및 개선사항" src="https://github.com/user-attachments/assets/b7b26d62-89fa-4e60-95e3-f46401dec1ec" />
+
 
 > **"사용자 편의성을 극대화한 양방향 소통 기능과 데이터 기반의 정밀 분석을 통해, 더욱 안정적이고 지능적인 개인 맞춤형 투자 환경을 구축하고자 합니다."**
 
