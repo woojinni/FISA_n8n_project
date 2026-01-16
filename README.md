@@ -11,6 +11,7 @@
 * [5. 실행 방법 (재현)](#5-실행-방법-재현)
 * [6. 트러블슈팅](#6-트러블슈팅)
 * [7. 한계 및 향후 개선](#7-한계-및-향후-개선)
+* [8. 용어 사전](#8-용어-사전)
 ---
 
 
@@ -388,4 +389,41 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 * **손실 데이터 학습:** 매매 결과를 기록하고 손실이 컸던 종목은 추천에서 제외하도록 로직을 개선한다.
 * **웹 관리 페이지:** 자산 변동 추이를 차트로 확인하고 시스템을 직접 조작할 수 있는 전용 웹사이트를 만든다.
 
+## 8. 용어 사전
 
+| 구분 | 용어 | 풀네임 / 원어 | 설명 |
+|---|---|---|---|
+| 자동화 | **n8n** | Node-based Workflow Automation | 노드(Node) 기반으로 API 호출, 데이터 처리, 조건 분기를 시각적으로 설계할 수 있는 워크플로우 자동화 플랫폼 |
+| 아키텍처 | **Workflow** | Workflow | 이벤트 또는 트리거를 시작으로 여러 노드를 순차/분기 실행하는 자동화 흐름 단위 |
+| 아키텍처 | **Node** | Node | n8n에서 하나의 작업 단위 (HTTP 요청, Code 실행, DB 쿼리 등) |
+| 보안 | **ZTA** | Zero Trust Architecture | 내부/외부 구분 없이 모든 접근을 검증하는 보안 설계 원칙 |
+| 상태 관리 | **FSM** | Finite State Machine | 미리 정의된 상태와 전이 규칙에 따라 시스템이 동작하도록 하는 모델 |
+| 상태 관리 | **State** | 상태 | 주문·포지션이 현재 어떤 단계(HOLDING, CLOSED 등)에 있는지 나타내는 값 |
+| 거래 | **Draft** | Draft Proposal | 실제 주문 전, 매매 조건을 정리한 투자 제안서 |
+| 거래 | **Position** | Position | 실제 체결 이후 보유 중인 자산 상태 |
+| 거래 | **Order** | Order | 거래소에 제출된 매수/매도 요청 및 그 체결 결과 |
+| 거래 | **TP** | Take Profit | 목표 익절 가격 또는 비율 |
+| 거래 | **SL** | Stop Loss | 목표 손절 가격 또는 비율 |
+| 거래 | **Trailing Stop** | Trailing Stop | 가격 상승 시 최고가를 추적하며 손절선을 함께 끌어올리는 전략 |
+| 거래 | **Avg Entry Price** | Average Entry Price | 여러 번 체결된 경우를 고려한 평균 매수가(평단가) |
+| 거래 | **Partial Fill** | 부분 체결 | 주문 수량 중 일부만 먼저 체결되는 현상 |
+| 거래 | **Idempotency** | 멱등성 | 동일 요청이 여러 번 들어와도 결과가 한 번만 반영되도록 보장하는 성질 |
+| API | **Upbit API** | Upbit Open API | 업비트에서 제공하는 시세 조회 및 주문 실행 REST API |
+| API | **JWT** | JSON Web Token | Upbit Private API 인증에 사용되는 토큰 방식 |
+| API | **Nonce** | Nonce | JWT 재사용 공격을 방지하기 위한 1회성 값 |
+| API | **query_hash** | Query Hash | 요청 파라미터를 해시해 JWT에 포함하는 무결성 검증 값 |
+| 인프라 | **GCP** | Google Cloud Platform | Google의 클라우드 인프라 서비스 |
+| 인프라 | **Cloud Run** | Cloud Run | 컨테이너 기반 Serverless 실행 환경 |
+| 인프라 | **VPC** | Virtual Private Cloud | 클라우드 내부 가상 네트워크 |
+| 인프라 | **Cloud NAT** | Cloud Network Address Translation | Serverless 환경에서 Outbound IP를 고정하기 위한 네트워크 구성 |
+| 인프라 | **Secret Manager** | Secret Manager | API Key, 비밀번호 등 민감 정보를 안전하게 저장·주입하는 서비스 |
+| 데이터베이스 | **PostgreSQL** | PostgreSQL RDBMS | 트랜잭션과 정합성이 강한 오픈소스 관계형 데이터베이스 |
+| 데이터베이스 | **ACID** | Atomicity, Consistency, Isolation, Durability | 트랜잭션의 4대 보장 성질 |
+| 데이터베이스 | **Source of Truth** | 단일 진실 공급원 | 시스템에서 가장 신뢰되는 기준 데이터 저장소 |
+| 인터페이스 | **Slack** | Slack | 알림, 승인 버튼, 자연어 인터페이스로 활용된 협업 도구 |
+| 인터페이스 | **Human-in-the-loop** | Human-in-the-loop | 자동 시스템 중간에 사람의 승인·개입을 의도적으로 포함하는 설계 |
+| AI | **AI Agent** | AI Agent | LLM이 도구(API, DB 등)를 호출하며 문제를 해결하는 실행 주체 |
+| AI | **Tool Calling** | Tool Calling | GPT가 외부 함수/API를 선택적으로 호출하는 기능 |
+| AI | **Chat Memory** | Conversation Memory | 이전 대화를 저장해 문맥을 유지하는 메모리 구조 |
+| 운영 | **Outbound IP** | Outbound IP | 외부 서비스로 요청을 보낼 때 사용되는 서버의 IP 주소 |
+| 운영 | **Replay** | Replay | 과거 데이터/로그를 기반으로 동일한 흐름을 다시 실행·분석하는 것 |
