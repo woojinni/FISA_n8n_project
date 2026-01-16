@@ -106,9 +106,65 @@ n8n을 활용한 워크플로우 자동화가
 
 <br>
 
+### 4.1 🗄️ 데이터베이스 스키마 (Database Schema)
+
+본 시스템은 **FSM 기반 상태 관리**와 실제 거래 환경의 불확실성(부분 체결, 취소 등)을 고려하여  
+테이블을 역할별로 명확히 분리하여 설계하였다.
+
+---
+
+#### 4.1.1 `draft_proposals` (투자 제안서 관리 테이블)
+
+| 컬럼명 | 타입 | 설명 |
+|---|---|---|
+| `id` | PK (INT) | 제안서 일련번호 |
+| `version_id` | UNIQUE (STRING) | 고유 버전 식별자 (중복 실행 방지용) |
+| `symbol` | STRING | 대상 자산 (BTC, ETH 등) |
+| `budget_krw` | NUMERIC | 투자 예산 (원화) |
+| `tp_pct` | NUMERIC | 목표 익절 비율 (예: 0.02 = 2%) |
+| `sl_pct` | NUMERIC | 목표 손절 비율 (예: 0.05 = 5%) |
+| `status` | STRING | 제안 상태 (PENDING, EXECUTED, EXPIRED 등) |
+| `request_data` | JSON | 사용자의 원본 요청 파라미터 백업 |
+| `expires_at` | TIMESTAMP | 제안서 유효 기간 (시세 변동 리스크 방지) |
+
+---
+
+#### 4.1.2 `positions` (보유 종목 감시 테이블)
+
+실제 체결 이후 생성되는 **보유 포지션의 상태를 FSM 기반으로 관리**하는 테이블이다.
+
+| 컬럼명 | 타입 | 설명 |
+|---|---|---|
+| `position_id` | PK (SERIAL) | 포지션 고유 번호 |
+| `symbol` | STRING | 종목 코드 (예: KRW-ETH) |
+| `state` | STRING | 상태 (HOLDING: 보유 중, CLOSED: 청산 완료) |
+| `qty` | NUMERIC | 실제 체결된 보유 수량 |
+| `avg_entry_price` | NUMERIC | 평균 진입 가격 (평단가) |
+| `tp_price` | NUMERIC | 익절가 (매수 시점에 미리 계산되어 저장) |
+| `sl_price` | NUMERIC | 손절가 (매수 시점에 미리 계산되어 저장) |
+| `highest_price` | NUMERIC | 트레일링 스탑용 최고점 가격 기록 |
+| `version_id` | FK (STRING) | 연결된 제안서의 `version_id` |
+
+---
+
+#### 4.1.3 `orders` (주문 및 체결 이력 테이블)
+
+실제 거래소와의 통신 결과를 기반으로  
+**부분 체결, 취소 등 현실적인 매매 이슈를 기록**하는 테이블이다.
+
+| 컬럼명 | 타입 | 설명 |
+|---|---|---|
+| `order_id` | PK (SERIAL) | 주문 고유 번호 |
+| `symbol` | STRING | 종목명 |
+| `type` | STRING | 주문 유형 (예: MARKET) |
+| `side` | STRING | 주문 방향 (BID: 매수, ASK: 매도) |
+| `requested_qty` | NUMERIC | 주문 요청 수량 |
+| `filled_qty` | NUMERIC | 실제 체결된 수량 |
+| `avg_fill_price` | NUMERIC | 실제 체결 평균가 (NaN 방지 로직 적용) |
+| `exchange_order_id` | STRING | 업비트 발급 주문 UUID |
+| `status` | STRING | 체결 상태 (FILLED, NEW, CANCELED 등) |
 
 
 
-<
 
 
