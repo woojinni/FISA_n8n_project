@@ -11,7 +11,7 @@
 * [1. 팀원 소개 (Team Members)](#1--팀원-소개-Team-Members)
 * [2. n8n 소개 (Workflow Automation Engine)](#2-️-n8n-소개-Workflow-Automation-Engine)
     * [2.1 프로젝트 내에서의 역할](#21--프로젝트-내에서의-역할)
-* [3. 주제 선정 배경 – 가상자산 자동 매매 파이프라인 (Project Background: Crypto Auto-Trading Pipeline)](#3--주제-선정-배경--가상자산-자동-매매-파이프라인-Project-Background:-Crypto-Auto--Trading-Pipeline))
+* [3. 주제 선정 배경 – 가상자산 자동 매매 파이프라인 (Project Background: Crypto Auto-Trading Pipeline)](#3--주제-선정-배경--가상자산-자동-매매-파이프라인-Project-Background-Crypto-Auto--Trading-Pipeline))
     * [3.1 시장 분석 및 전략적 접근](#31--시장-분석-및-전략적-접근)
     * [3.2 시장 분석: 기존 솔루션의 한계와 대안](#32--시장-분석-기존-솔루션의-한계와-대안)
 * [4. 시스템 구축 환경 (System Architecture Stack)](#4-️-시스템-구축-환경-System-Architecture-Stack)
