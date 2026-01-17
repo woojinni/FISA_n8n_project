@@ -201,7 +201,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 |---|---|---|
 | `position_id` | PK (SERIAL) | 포지션 고유 번호 |
 | `symbol` | STRING | 종목 코드 (예: KRW-ETH) |
-| `state` | STRING | 상태 (HOLDING: 보유 중, CLOSED: 청산 완료) |
+| `state` | STRING | 상태 (HOLDING: 자동매수로 보유 중, OPEN: 수동매수로 보유중 CLOSED: 청산 완료) |
 | `qty` | NUMERIC | 실제 체결된 보유 수량 |
 | `avg_entry_price` | NUMERIC | 평균 진입 가격 (평단가) |
 | `tp_price` | NUMERIC | 익절가 (매수 시점에 미리 계산되어 저장) |
