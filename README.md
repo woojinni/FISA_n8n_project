@@ -290,7 +290,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 | 구성 |
 |---|
-| <img width="680" height="469" alt="image" src="https://github.com/user-attachments/assets/f503e996-f18b-4585-83b6-776abc318aa3" /> |
+| <img width="680" height="450" alt="image" src="https://github.com/user-attachments/assets/f503e996-f18b-4585-83b6-776abc318aa3" /> |
 
 
 #### 🎯 목적
@@ -338,7 +338,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="523" height="340" alt="image" src="https://github.com/user-attachments/assets/3bbec077-0d9f-42c1-99a1-088ec0c8eec0" /> |
+| <img width="900" height="800" alt="image" src="https://github.com/user-attachments/assets/3bbec077-0d9f-42c1-99a1-088ec0c8eec0" /> |
 
 #### 🎯 목적
 사용자의 입력값을 기반으로  
@@ -364,7 +364,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="1018" height="421" alt="image" src="https://github.com/user-attachments/assets/42efca9b-9e12-45fd-988d-796f49c53cb9" />|
+| <img width="1200" height="900" alt="image" src="https://github.com/user-attachments/assets/42efca9b-9e12-45fd-988d-796f49c53cb9" />|
 
 #### 🎯 목적
 사용자의 승인/거절 액션을 처리하고,  
