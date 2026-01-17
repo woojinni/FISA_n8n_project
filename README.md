@@ -364,7 +364,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="934" height="536" alt="image" src="https://github.com/user-attachments/assets/8397242a-7b9c-465c-9053-489ab9b59ae4" />  |
+| <img width="1018" height="421" alt="image" src="https://github.com/user-attachments/assets/42efca9b-9e12-45fd-988d-796f49c53cb9" />|
 
 #### 🎯 목적
 사용자의 승인/거절 액션을 처리하고,  
@@ -377,10 +377,13 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 | **Respond to Webhook** | Slack Interactive Button 이벤트 수신 |
 | **Lock Draft (PROCESSING)** | Draft 상태 잠금 (중복 실행 방지) |
 | **Get Draft** | 승인 대상 Draft 정보 조회 |
-| **IF (승인 / 거절 분기)** | 사용자 의사에 따른 흐름 분기 |
+| **IF (승인 / 거절 분기)** | 사용자의 선택(Approve/Reject)에 따른 워크플로우 흐름 분기 |
 | **HTTP Request (Upbit 시세 조회)** | 주문 전 최신 시세 확인 |
-| **HTTP Request (Upbit 주문 API)** | 실제 매수 주문 실행 |
-| **Insert Order** | 주문 이력 저장 |
+| **HTTP Request (실제 매수 API)** | 업비트 API를 통해 실시간 시장가 매수 주문 전송 |
+| **Wait (2s)r** | 업비트 서버 내 체결 완료 및 잔고 반영을 위한 대기 시간 확보 |
+| **Code (for Re-fetch)** | 보안 정책(Nonce) 준수를 위한 재조회용 새로운 JWT 토큰 생성 |
+| **HTTP Request (Upbit Accounts)** | 체결 후 실제 내 지갑에 담긴 코인 잔고 정보를 실시간 재조회 |
+| **Insert Order** | 실제 체결 수량 및 평단가를 포함한 상세 주문 이력 저장 |
 | **Finalize Draft** | Draft 상태 EXECUTED로 변경 |
 | **Create Position Record** | 포지션 감시용 데이터 생성 |
 | **Slack 메시지 전송** | 승인 결과 및 주문 결과 사용자 알림 |
