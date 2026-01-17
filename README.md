@@ -8,40 +8,32 @@
 
 ## 📌 목차
 
-* [1. 팀원 소개](#1--팀원-소개)
-* [2. n8n 소개 (Workflow Automation Engine)](#2-️-n8n-소개-workflow-automation-engine)
+* [1. 팀원 소개 (Team Members)](#1--팀원-소개-Team-Members)
+* [2. n8n 소개 (Workflow Automation Engine)](#2-️-n8n-소개-Workflow-Automation-Engine)
     * [2.1 프로젝트 내에서의 역할](#21--프로젝트-내에서의-역할)
-* [3. 주제 선정 배경](#3--주제-선정-배경--가상자산-자동-매매-파이프라인)
+* [3. 주제 선정 배경 – 가상자산 자동 매매 파이프라인 (Project Background: Crypto Auto-Trading Pipeline)](#3--주제-선정-배경--가상자산-자동-매매-파이프라인-Project-Background:-Crypto-Auto--Trading-Pipeline))
     * [3.1 시장 분석 및 전략적 접근](#31--시장-분석-및-전략적-접근)
     * [3.2 시장 분석: 기존 솔루션의 한계와 대안](#32--시장-분석-기존-솔루션의-한계와-대안)
-        * [3.2.1 기존 솔루션의 Pain Points](#1--기존-솔루션의-pain-points)
-        * [3.2.2 해결책: n8n (Hybrid Workflow)](#2--해결책-n8n-hybrid-workflow)
-        * [3.2.3 프로젝트 목표](#3--프로젝트-목표)
-* [4. 시스템 구축 환경 (System Architecture Stack)](#4-️-시스템-구축-환경-system-architecture-stack)
+* [4. 시스템 구축 환경 (System Architecture Stack)](#4-️-시스템-구축-환경-System-Architecture-Stack)
     * [4.1 기술 선택 이유](#41--기술-선택-이유)
-        * [4.1.1 PostgreSQL 선택 이유](#411--postgresql-선택-이유)
-        * [4.1.2 GCP 선택 이유](#412--gcp-선택-이유)
-    * [4.2 데이터베이스 스키마 설계](#42-️-데이터베이스-스키마-database-schema)
-        * [4.2.1 draft_proposals (투자 제안서 관리)](#421-draft_proposals-투자-제안서-관리-테이블)
-        * [4.2.2 positions (보유 종목 감시)](#422-positions-보유-종목-감시-테이블)
-        * [4.2.3 orders (주문 및 체결 이력)](#423-orders-주문-및-체결-이력-테이블)
-* [5. 운영 환경 변수 및 보안 설정](#5--운영-환경-변수-설정-runtime-environment-configuration)
+    * [4.2 데이터베이스 스키마](#42-️-데이터베이스-스키마)
+* [5. 운영 환경 변수 설정 (Runtime Environment Configuration)](#5--운영-환경-변수-설정-Runtime-Environment-Configuration)
     * [5.1 주요 환경 변수 요약](#51--주요-환경-변수-요약)
     * [5.2 Secret Manager 연동 항목](#52--secret-manager-연동-항목)
-* [6. 핵심 워크플로우 설계 (Core Workflow Design)](#6--핵심-워크플로우-설계-core-workflow-design)
-    * [6.1 AI 기반 트레이딩 챗봇](#61--ai-기반-트레이딩-챗봇-워크플로우)
+* [6. 핵심 워크플로우 설계 (Core Workflow Design)](#6--핵심-워크플로우-설계-Core-Workflow-Design)
+    * [6.1 AI 기반 트레이딩 챗봇 워크플로우](#61--ai-기반-트레이딩-챗봇-워크플로우)
     * [6.2 투자 제안 생성 워크플로우](#62--투자-제안-생성-워크플로우)
-        * [6.2.1 Workflow 1 – 제안서 생성](#-workflow-1--투자-제안서-생성-및-알림)
-        * [6.2.2 Workflow 2 – 승인 및 주문](#-workflow-2--draft-승인-처리-및-주문-준비)
+    * [6.2 포지션 감시 및 하이브리드 청산 워크플로우](#62--포지션-감시-및-하이브리드-청산-워크플로우)
 * [7. 트러블슈팅 (Troubleshooting)](#7--트러블슈팅-troubleshooting)
-* [8. 한계 및 향후 개선 사항](#8--한계-및-향후-개선-사항-limitations--future-improvements)
-* [9. 용어 정리](#9--용어-정리)
+* [8. 한계 및 향후 개선 사항 (Limitations & Future Improvements)](#8--한계-및-향후-개선-사항-Limitations--Future-Improvements)
+* [9. 용어 사전 (Glossary)](#9--용어-사전-Glossary)
   
 ---
 
 
 
-## 1. 👤 팀원 소개
+
+## 1. 👤 팀원 소개 (Team Members)
 
 | <img src="https://github.com/minchaeki.png" width="150"> | <img src="https://github.com/YongwanJoo.png" width="150"> | <img src="https://github.com/woojinni.png" width="150"> | 
 | :---: | :---: | :---: |
@@ -76,7 +68,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 
 <br>
 
-## 3. 💡 주제 선정 배경 – 가상자산 자동 매매 파이프라인
+## 3. 💡 주제 선정 배경 – 가상자산 자동 매매 파이프라인 (Project Background: Crypto Auto-Trading Pipeline)
 
 본 프로젝트는 **가상자산 트레이딩에 대한 개인적인 관심**에서 출발하였다.  
 시장 흐름을 분석하고 매수·매도 시점을 판단하는 과정은 흥미롭지만,  
@@ -101,19 +93,19 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 
 개인 투자자가 접근 가능한 기존 자동 매매 환경은 **편의성(SaaS)과 자유도(Custom Script)** 사이에서 양극화되어 있다. 본 프로젝트는 이 두 방식의 구조적 한계를 극복하기 위해 시작되었다.
 
-#### 3.2.1) 💔 기존 솔루션의 Pain Points
+#### 💔 기존 솔루션의 Pain Points
 | 구분 | 장점 | 주요 한계점 (Limitations) |
 | :--- | :--- | :--- |
 | **SaaS 플랫폼**<br>(3Commas 등) | 웹 기반 설정,<br>편의성 우수 | • **높은 구독료** 및 전략의 **블랙박스화**<br>• 커스텀 로직 및 외부 데이터 연동 불가 |
 | **Python 스크립트**<br>(Custom Dev) | 무한한 자유도,<br>비용 절감 | • **운영 부담** (서버 관리, 에러 핸들링)<br>• 시각화된 모니터링 및 제어 UI 부재 |
 
-#### 3.2.2) ❤️‍🩹 해결책: n8n (Hybrid Workflow)
+#### ❤️‍🩹 해결책: n8n (Hybrid Workflow)
 **n8n**은 "전략 설계의 자유도"와 "운영의 편의성"을 동시에 제공하는 최적의 대안이다.
 * **White-Box Strategy:** 모든 로직이 시각화되어 흐름을 완벽히 통제 가능 (블랙박스 문제 해결)
 * **Low-Code + Pro-Code:** 복잡한 연산은 Python 노드로, 흐름 제어는 GUI로 처리하여 개발 효율 극대화
 * **Cost-Effective:** Docker/Serverless 환경을 통해 인프라 안정성 확보 및 비용 절감
 
-#### 3.2.3) ⛳️ 프로젝트 목표
+#### ⛳️ 프로젝트 목표
 단순 매매 봇을 넘어, **실제 서비스 수준의 안정성**을 갖춘 파이프라인을 구축한다.
 * **Data-Driven:** 기술적 지표와 AI 분석이 결합된 전략 수립
 * **Human-in-the-loop:** 사용자 승인(Slack)을 통한 반자동 매매 구조
@@ -147,7 +139,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 본 프로젝트는 “자동 매매”라는 도메인 특성상 **실시간성 + 안정성 + 감사 가능성(Traceability)** 을 요구한다.
 따라서 단순히 “동작”하는 수준을 넘어, **운영 환경에서 장애/보안/확장 이슈를 견딜 수 있는 구성**을 우선으로 기술 스택을 선정하였다.
 
-#### 4.1.1 🐘 PostgreSQL 선택 이유
+#### 🐘 PostgreSQL 선택 이유
 
 자동 매매 시스템은 단순 로그 저장이 아니라, **상태 전이(FSM)와 주문/체결의 정합성**을 다뤄야 한다.
 PostgreSQL은 아래 이유로 본 프로젝트의 “상태 기반 거래 파이프라인”에 적합하다.
@@ -160,7 +152,7 @@ PostgreSQL은 아래 이유로 본 프로젝트의 “상태 기반 거래 파�
 
 >결론적으로 PostgreSQL은 “매매 상태의 단일 진실 공급원(Source of Truth)” 역할을 수행하며, 장애 상황에서도 **중복 주문/상태 꼬임을 방지**하는 기반이 된다.
 
-#### 4.1.2 ☁️ GCP 선택 이유
+#### ☁️ GCP 선택 이유
 
 자동 매매 특성상 **상시 실행 + 보안 + 안정적인 네트워크**가 필요하다.
 
@@ -181,7 +173,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 
-#### 4.2.1 `draft_proposals` (투자 제안서 관리 테이블)
+#### 📝 `draft_proposals` (투자 제안서 관리 테이블)
 
 | 컬럼명 | 타입 | 설명 |
 |---|---|---|
@@ -197,7 +189,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 
-#### 4.2.2 `positions` (보유 종목 감시 테이블)
+#### 📈 `positions` (보유 종목 감시 테이블)
 
 실제 체결 이후 생성되는 **보유 포지션의 상태를 FSM 기반으로 관리**하는 테이블이다.
 
@@ -215,7 +207,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 
-#### 4.2.3 `orders` (주문 및 체결 이력 테이블)
+#### 🧾 `orders` (주문 및 체결 이력 테이블)
 
 실제 거래소와의 통신 결과를 기반으로  
 **부분 체결, 취소 등 현실적인 매매 이슈를 기록**하는 테이블이다.
@@ -482,9 +474,9 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 * **손실 데이터 학습:** 매매 결과를 기록하고 손실이 컸던 종목은 추천에서 제외하도록 로직을 개선한다.
 * **웹 관리 페이지:** 자산 변동 추이를 차트로 확인하고 시스템을 직접 조작할 수 있는 전용 웹사이트를 만든다.
 
-## 9. 용어 사전
+## 9. 📖 용어 사전 (Glossary)
 
-## 📘 용어 사전 (Glossary)
+## 📘 용어 사전 
 
 | 구분 | 용어 | 풀네임 / 원어 | 설명 |
 |---|---|---|---|
