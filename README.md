@@ -168,6 +168,11 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ### 4.2 🗄️ 데이터베이스 스키마 (Database Schema)
 
+| 구성 |
+|---|
+| <img width="890" height="1024" alt="image" src="https://github.com/user-attachments/assets/38d0a2eb-82bc-402e-952a-399a1f60b8c9" /> |
+
+
 본 시스템은 **FSM 기반 상태 관리**와 실제 거래 환경의 불확실성(부분 체결, 취소 등)을 고려하여  
 테이블을 역할별로 명확히 분리하여 설계하였다.
 
