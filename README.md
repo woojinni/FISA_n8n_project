@@ -1,43 +1,39 @@
 # 🤖 n8n 기반: 지능형 가상자산 자동 매매 파이프라인 구축
 
+![unnamed (1)](https://github.com/user-attachments/assets/5206b719-ef9a-4e49-aac6-49c881c1cc61)
+
+
 **GCP 인프라와 n8n 워크플로우를 활용한 데이터 기반 전략 수립 및 실시간 자동 거래 시스템**
+
 
 ## 📌 목차
 
-* [1. 팀원 소개](#1--팀원-소개)
-* [2. n8n 소개 (Workflow Automation Engine)](#2-️-n8n-소개-workflow-automation-engine)
+* [1. 팀원 소개 (Team Members)](#1--팀원-소개-Team-Members)
+* [2. n8n 소개 (Workflow Automation Engine)](#2-️-n8n-소개-Workflow-Automation-Engine)
     * [2.1 프로젝트 내에서의 역할](#21--프로젝트-내에서의-역할)
-* [3. 주제 선정 배경](#3--주제-선정-배경--가상자산-자동-매매-파이프라인)
+* [3. 주제 선정 배경 – 가상자산 자동 매매 파이프라인 (Project Background: Crypto Auto-Trading Pipeline)](#3--주제-선정-배경--가상자산-자동-매매-파이프라인-Project-Background-Crypto-Auto--Trading-Pipeline))
     * [3.1 시장 분석 및 전략적 접근](#31--시장-분석-및-전략적-접근)
     * [3.2 시장 분석: 기존 솔루션의 한계와 대안](#32--시장-분석-기존-솔루션의-한계와-대안)
-        * [3.2.1 기존 솔루션의 Pain Points](#1--기존-솔루션의-pain-points)
-        * [3.2.2 해결책: n8n (Hybrid Workflow)](#2--해결책-n8n-hybrid-workflow)
-        * [3.2.3 프로젝트 목표](#3--프로젝트-목표)
-* [4. 시스템 구축 환경 (System Architecture Stack)](#4-️-시스템-구축-환경-system-architecture-stack)
+* [4. 시스템 구축 환경 (System Architecture Stack)](#4-️-시스템-구축-환경-System-Architecture-Stack)
     * [4.1 기술 선택 이유](#41--기술-선택-이유)
-        * [4.1.1 PostgreSQL 선택 이유](#411--postgresql-선택-이유)
-        * [4.1.2 GCP 선택 이유](#412--gcp-선택-이유)
-    * [4.2 데이터베이스 스키마 설계](#42-️-데이터베이스-스키마-database-schema)
-        * [4.2.1 draft_proposals (투자 제안서 관리)](#421-draft_proposals-투자-제안서-관리-테이블)
-        * [4.2.2 positions (보유 종목 감시)](#422-positions-보유-종목-감시-테이블)
-        * [4.2.3 orders (주문 및 체결 이력)](#423-orders-주문-및-체결-이력-테이블)
-* [5. 운영 환경 변수 및 보안 설정](#5--운영-환경-변수-설정-runtime-environment-configuration)
+    * [4.2 데이터베이스 스키마](#42-️-데이터베이스-스키마)
+* [5. 운영 환경 변수 설정 (Runtime Environment Configuration)](#5--운영-환경-변수-설정-Runtime-Environment-Configuration)
     * [5.1 주요 환경 변수 요약](#51--주요-환경-변수-요약)
     * [5.2 Secret Manager 연동 항목](#52--secret-manager-연동-항목)
-* [6. 핵심 워크플로우 설계 (Core Workflow Design)](#6--핵심-워크플로우-설계-core-workflow-design)
-    * [6.1 AI 기반 트레이딩 챗봇](#61--ai-기반-트레이딩-챗봇-워크플로우)
+* [6. 핵심 워크플로우 설계 (Core Workflow Design)](#6--핵심-워크플로우-설계-Core-Workflow-Design)
+    * [6.1 AI 기반 트레이딩 챗봇 워크플로우](#61--ai-기반-트레이딩-챗봇-워크플로우)
     * [6.2 투자 제안 생성 워크플로우](#62--투자-제안-생성-워크플로우)
-        * [6.2.1 Workflow 1 – 제안서 생성](#-workflow-1--투자-제안서-생성-및-알림)
-        * [6.2.2 Workflow 2 – 승인 및 주문](#-workflow-2--draft-승인-처리-및-주문-준비)
+    * [6.2 포지션 감시 및 하이브리드 청산 워크플로우](#62--포지션-감시-및-하이브리드-청산-워크플로우)
 * [7. 트러블슈팅 (Troubleshooting)](#7--트러블슈팅-troubleshooting)
-* [8. 한계 및 향후 개선 사항](#8--한계-및-향후-개선-사항-limitations--future-improvements)
-* [9. 용어 정리](#9--용어-정리)
+* [8. 한계 및 향후 개선 사항 (Limitations & Future Improvements)](#8--한계-및-향후-개선-사항-Limitations--Future-Improvements)
+* [9. 용어 사전 (Glossary)](#9--용어-사전-Glossary)
   
 ---
 
 
 
-## 1. 👤 팀원 소개
+
+## 1. 👤 팀원 소개 (Team Members)
 
 | <img src="https://github.com/minchaeki.png" width="150"> | <img src="https://github.com/YongwanJoo.png" width="150"> | <img src="https://github.com/woojinni.png" width="150"> | 
 | :---: | :---: | :---: |
@@ -72,7 +68,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 
 <br>
 
-## 3. 💡 주제 선정 배경 – 가상자산 자동 매매 파이프라인
+## 3. 💡 주제 선정 배경 – 가상자산 자동 매매 파이프라인 (Project Background: Crypto Auto-Trading Pipeline)
 
 본 프로젝트는 **가상자산 트레이딩에 대한 개인적인 관심**에서 출발하였다.  
 시장 흐름을 분석하고 매수·매도 시점을 판단하는 과정은 흥미롭지만,  
@@ -97,19 +93,19 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 
 개인 투자자가 접근 가능한 기존 자동 매매 환경은 **편의성(SaaS)과 자유도(Custom Script)** 사이에서 양극화되어 있다. 본 프로젝트는 이 두 방식의 구조적 한계를 극복하기 위해 시작되었다.
 
-#### 3.2.1) 💔 기존 솔루션의 Pain Points
+#### 💔 기존 솔루션의 Pain Points
 | 구분 | 장점 | 주요 한계점 (Limitations) |
 | :--- | :--- | :--- |
 | **SaaS 플랫폼**<br>(3Commas 등) | 웹 기반 설정,<br>편의성 우수 | • **높은 구독료** 및 전략의 **블랙박스화**<br>• 커스텀 로직 및 외부 데이터 연동 불가 |
 | **Python 스크립트**<br>(Custom Dev) | 무한한 자유도,<br>비용 절감 | • **운영 부담** (서버 관리, 에러 핸들링)<br>• 시각화된 모니터링 및 제어 UI 부재 |
 
-#### 3.2.2) ❤️‍🩹 해결책: n8n (Hybrid Workflow)
+#### ❤️‍🩹 해결책: n8n (Hybrid Workflow)
 **n8n**은 "전략 설계의 자유도"와 "운영의 편의성"을 동시에 제공하는 최적의 대안이다.
 * **White-Box Strategy:** 모든 로직이 시각화되어 흐름을 완벽히 통제 가능 (블랙박스 문제 해결)
 * **Low-Code + Pro-Code:** 복잡한 연산은 Python 노드로, 흐름 제어는 GUI로 처리하여 개발 효율 극대화
 * **Cost-Effective:** Docker/Serverless 환경을 통해 인프라 안정성 확보 및 비용 절감
 
-#### 3.2.3) ⛳️ 프로젝트 목표
+#### ⛳️ 프로젝트 목표
 단순 매매 봇을 넘어, **실제 서비스 수준의 안정성**을 갖춘 파이프라인을 구축한다.
 * **Data-Driven:** 기술적 지표와 AI 분석이 결합된 전략 수립
 * **Human-in-the-loop:** 사용자 승인(Slack)을 통한 반자동 매매 구조
@@ -143,7 +139,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 본 프로젝트는 “자동 매매”라는 도메인 특성상 **실시간성 + 안정성 + 감사 가능성(Traceability)** 을 요구한다.
 따라서 단순히 “동작”하는 수준을 넘어, **운영 환경에서 장애/보안/확장 이슈를 견딜 수 있는 구성**을 우선으로 기술 스택을 선정하였다.
 
-#### 4.1.1 🐘 PostgreSQL 선택 이유
+#### 🐘 PostgreSQL 선택 이유
 
 자동 매매 시스템은 단순 로그 저장이 아니라, **상태 전이(FSM)와 주문/체결의 정합성**을 다뤄야 한다.
 PostgreSQL은 아래 이유로 본 프로젝트의 “상태 기반 거래 파이프라인”에 적합하다.
@@ -156,7 +152,7 @@ PostgreSQL은 아래 이유로 본 프로젝트의 “상태 기반 거래 파�
 
 >결론적으로 PostgreSQL은 “매매 상태의 단일 진실 공급원(Source of Truth)” 역할을 수행하며, 장애 상황에서도 **중복 주문/상태 꼬임을 방지**하는 기반이 된다.
 
-#### 4.1.2 ☁️ GCP 선택 이유
+#### ☁️ GCP 선택 이유
 
 자동 매매 특성상 **상시 실행 + 보안 + 안정적인 네트워크**가 필요하다.
 
@@ -172,12 +168,17 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ### 4.2 🗄️ 데이터베이스 스키마 (Database Schema)
 
+| 구성 |
+|---|
+| <img width="890" height="1024" alt="image" src="https://github.com/user-attachments/assets/ba244a0a-fd50-4768-9cdf-aa8c7578c7ec" />|
+
+
 본 시스템은 **FSM 기반 상태 관리**와 실제 거래 환경의 불확실성(부분 체결, 취소 등)을 고려하여  
 테이블을 역할별로 명확히 분리하여 설계하였다.
 
 ---
 
-#### 4.2.1 `draft_proposals` (투자 제안서 관리 테이블)
+#### 📝 `draft_proposals` (투자 제안서 관리 테이블)
 
 | 컬럼명 | 타입 | 설명 |
 |---|---|---|
@@ -193,7 +194,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 
-#### 4.2.2 `positions` (보유 종목 감시 테이블)
+#### 📈 `positions` (보유 종목 감시 테이블)
 
 실제 체결 이후 생성되는 **보유 포지션의 상태를 FSM 기반으로 관리**하는 테이블이다.
 
@@ -201,7 +202,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 |---|---|---|
 | `position_id` | PK (SERIAL) | 포지션 고유 번호 |
 | `symbol` | STRING | 종목 코드 (예: KRW-ETH) |
-| `state` | STRING | 상태 (HOLDING: 보유 중, CLOSED: 청산 완료) |
+| `state` | STRING | 상태 (HOLDING: 자동매수로 보유 중, OPEN: 수동매수로 보유중 CLOSED: 청산 완료) |
 | `qty` | NUMERIC | 실제 체결된 보유 수량 |
 | `avg_entry_price` | NUMERIC | 평균 진입 가격 (평단가) |
 | `tp_price` | NUMERIC | 익절가 (매수 시점에 미리 계산되어 저장) |
@@ -211,7 +212,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 
-#### 4.2.3 `orders` (주문 및 체결 이력 테이블)
+#### 🧾 `orders` (주문 및 체결 이력 테이블)
 
 실제 거래소와의 통신 결과를 기반으로  
 **부분 체결, 취소 등 현실적인 매매 이슈를 기록**하는 테이블이다.
@@ -286,7 +287,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 | 구성 |
 |---|
-| <img width="680" height="469" alt="image" src="https://github.com/user-attachments/assets/f503e996-f18b-4585-83b6-776abc318aa3" /> |
+| <img width="680" height="450" alt="image" src="https://github.com/user-attachments/assets/f503e996-f18b-4585-83b6-776abc318aa3" /> |
 
 
 #### 🎯 목적
@@ -334,7 +335,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="523" height="340" alt="image" src="https://github.com/user-attachments/assets/3bbec077-0d9f-42c1-99a1-088ec0c8eec0" /> |
+| <img width="900" height="800" alt="image" src="https://github.com/user-attachments/assets/3bbec077-0d9f-42c1-99a1-088ec0c8eec0" /> |
 
 #### 🎯 목적
 사용자의 입력값을 기반으로  
@@ -360,7 +361,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="934" height="536" alt="image" src="https://github.com/user-attachments/assets/8397242a-7b9c-465c-9053-489ab9b59ae4" />  |
+| <img width="1200" height="900" alt="image" src="https://github.com/user-attachments/assets/42efca9b-9e12-45fd-988d-796f49c53cb9" />|
 
 #### 🎯 목적
 사용자의 승인/거절 액션을 처리하고,  
@@ -373,10 +374,13 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 | **Respond to Webhook** | Slack Interactive Button 이벤트 수신 |
 | **Lock Draft (PROCESSING)** | Draft 상태 잠금 (중복 실행 방지) |
 | **Get Draft** | 승인 대상 Draft 정보 조회 |
-| **IF (승인 / 거절 분기)** | 사용자 의사에 따른 흐름 분기 |
+| **IF (승인 / 거절 분기)** | 사용자의 선택(Approve/Reject)에 따른 워크플로우 흐름 분기 |
 | **HTTP Request (Upbit 시세 조회)** | 주문 전 최신 시세 확인 |
-| **HTTP Request (Upbit 주문 API)** | 실제 매수 주문 실행 |
-| **Insert Order** | 주문 이력 저장 |
+| **HTTP Request (실제 매수 API)** | 업비트 API를 통해 실시간 시장가 매수 주문 전송 |
+| **Wait (2s)r** | 업비트 서버 내 체결 완료 및 잔고 반영을 위한 대기 시간 확보 |
+| **Code (for Re-fetch)** | 보안 정책(Nonce) 준수를 위한 재조회용 새로운 JWT 토큰 생성 |
+| **HTTP Request (Upbit Accounts)** | 체결 후 실제 내 지갑에 담긴 코인 잔고 정보를 실시간 재조회 |
+| **Insert Order** | 실제 체결 수량 및 평단가를 포함한 상세 주문 이력 저장 |
 | **Finalize Draft** | Draft 상태 EXECUTED로 변경 |
 | **Create Position Record** | 포지션 감시용 데이터 생성 |
 | **Slack 메시지 전송** | 승인 결과 및 주문 결과 사용자 알림 |
@@ -386,7 +390,71 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 
-## 6. 🚨 트러블슈팅 (Troubleshooting)
+### 6.3 ⏱️ 포지션 감시 및 하이브리드 청산 워크플로우  
+
+| 구성 |
+|---|
+| <img width="1088" height="509" alt="image" src="https://github.com/user-attachments/assets/49ba24ac-5f72-41c1-b677-2a6068f5e960" />  |
+
+본 워크플로우는 **1분 주기로 업비트 실제 잔고와 DB 장부를 동기화(Sync)** 하며,  
+**자동 매매 포지션은 TP/SL 조건에 따라 청산**하고,  
+**수동 매매 포지션은 감지/추적만 수행**하는 하이브리드 운영 루프이다.  
+
+또한 실거래 제약(최소 주문금액 5,000원)을 반영하여  
+조건 충족 시에만 매도 주문을 수행하도록 설계하였다.
+
+---
+
+#### 🎯 목적
+- **실시간 포지션 감시** (가격/수익률/평가손익 계산)
+- **자동매매 포지션 청산** (TP/SL 도달 시 시장가 매도)
+- **수동매매 이벤트 감지** (수동 매수/매도 발생 시 상태 동기화)
+- **Slack 알림**을 통해 운영 가시성 확보
+
+---
+
+#### 🔄 주요 흐름
+- **Interval Trigger (1분)** 로 워크플로우 주기 실행
+- **Upbit Accounts**(실제 잔고) 조회 + **Read Positions**(DB 장부) 조회
+- **Sync Logic**을 통해 포지션을 3가지로 분류
+  - `newBuys` : 업비트엔 있으나 DB에 없는 **수동 매수 감지**
+  - `manualSells` : DB엔 있으나 업비트에 없는 **수동 매도 감지**
+  - `activePositions` : 계속 감시할 보유 포지션
+- `activePositions`에 대해 **Upbit 시세 조회**
+- **자동/수동 포지션 구분**
+  - `tp_price`와 `sl_price`가 0이면 → **수동 관리**(KEEP)
+  - 그 외 → **자동 관리**(TP/SL 조건 판단)
+- TP/SL 도달 + **주문금액 ≥ 5,000원**이면 시장가 매도 실행
+- 주문 결과를 DB에 반영하고 Slack으로 결과 알림
+
+---
+
+#### 🧩 주요 노드 설명
+
+| 노드 | 설명 |
+|------|------|
+| **Interval Trigger (1min)** | 포지션 감시 루프를 주기적으로 실행 |
+| **Upbit Accounts** | 업비트 실제 잔고 조회(현실 상태) |
+| **Read Positions (DB)** | DB에 저장된 포지션 장부 조회(시스템 상태) |
+| **Sync Logic (Code)** | 업비트 잔고 vs DB를 비교하여 `newBuys / manualSells / activePositions`로 분류 |
+| **Upbit Market (Ticker)** | `activePositions` 대상 실시간 시세 조회 |
+| **Code (자동/수동 판별 + TP/SL 판단)** | `tp_price/sl_price` 기반 자동/수동 포지션 구분, TP/SL + 최소주문금액(5,000원) 검증 |
+| **JWT Generator (Sell)** | 업비트 주문용 `query_hash` 포함 JWT 생성 (시장가 매도용) |
+| **HTTP Request (Sell Order)** | 실제 시장가 매도 주문 실행 |
+| **Insert Exit Order / Close Position** | 청산 주문 기록 및 포지션 상태 전이 |
+| **Slack Send Message** | 감시/청산/예외 상황을 Slack으로 알림 |
+
+---
+
+#### ✨ 설계 포인트
+- **현실 상태(업비트) ↔ 시스템 상태(DB)** 를 비교하는 *장부 동기화 기반 운영*
+- `tp_price=0 && sl_price=0` 규칙으로 **수동 포지션을 자동 청산에서 제외**
+- 최소 주문금액 5,000원 규칙을 반영해 **불필요한 주문 실패를 사전에 차단**
+- 수동 매수/매도도 감지하여 **운영 중 발생하는 예외 흐름을 흡수**
+
+---
+
+## 7. 🚨 트러블슈팅 (Troubleshooting)
 
 ## 🛠️ TradingBot 프로젝트 트러블슈팅 요약
 
@@ -400,9 +468,10 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 | **워크플로우 중단** | DB에 감시 종목 없을 때 전체 플로우 중단 | n8n은 **노드 결과가 없으면(No output)** 워크플로우 중단 | DB 조회 노드에 **Always Output Data** 옵션 활성화 |
 | **인터페이스/알림** | Slack 메시지에 종목명·평단가·수량이 빈칸 | `upbit market` 노드가 이전 DB 데이터를 **덮어씀** | 최종 Code Node에서 `$("Item Lists(activePositions)").item.json`로 이전 노드 데이터 명시적 참조 |
 
-## 7. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
+## 8. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
 
-<img width="2752" height="1536" alt="향후 및 개선사항" src="https://github.com/user-attachments/assets/b7b26d62-89fa-4e60-95e3-f46401dec1ec" />
+<img width="1024" height="565" alt="image" src="https://github.com/user-attachments/assets/14d1307d-fbcc-46aa-90cf-9071f9b1b808" />
+
 
 
 > **"매매 기록을 저장해 손실 종목 추천을 방지하고, 전체 자산을 한눈에 확인하는 웹 대시보드를 구축한다."**
@@ -411,9 +480,9 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 * **손실 데이터 학습:** 매매 결과를 기록하고 손실이 컸던 종목은 추천에서 제외하도록 로직을 개선한다.
 * **웹 관리 페이지:** 자산 변동 추이를 차트로 확인하고 시스템을 직접 조작할 수 있는 전용 웹사이트를 만든다.
 
-## 8. 용어 사전
+## 9. 📖 용어 사전 (Glossary)
 
-## 📘 용어 사전 (Glossary)
+## 📘 용어 사전 
 
 | 구분 | 용어 | 풀네임 / 원어 | 설명 |
 |---|---|---|---|
