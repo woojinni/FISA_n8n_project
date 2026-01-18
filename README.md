@@ -170,7 +170,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 | 구성 |
 |---|
-| <img width="890" height="1024" alt="image" src="https://github.com/user-attachments/assets/38d0a2eb-82bc-402e-952a-399a1f60b8c9" /> |
+| <img width="890" height="1024" alt="image" src="https://github.com/user-attachments/assets/ba244a0a-fd50-4768-9cdf-aa8c7578c7ec" />|
 
 
 본 시스템은 **FSM 기반 상태 관리**와 실제 거래 환경의 불확실성(부분 체결, 취소 등)을 고려하여  
