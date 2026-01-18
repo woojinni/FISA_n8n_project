@@ -470,7 +470,8 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ## 8. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
 
-<img width="2752" height="1536" alt="향후 및 개선사항" src="https://github.com/user-attachments/assets/b7b26d62-89fa-4e60-95e3-f46401dec1ec" />
+<img width="1024" height="565" alt="image" src="https://github.com/user-attachments/assets/14d1307d-fbcc-46aa-90cf-9071f9b1b808" />
+
 
 
 > **"매매 기록을 저장해 손실 종목 추천을 방지하고, 전체 자산을 한눈에 확인하는 웹 대시보드를 구축한다."**
