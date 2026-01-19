@@ -137,6 +137,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 | **Security** | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/googlecloud/googlecloud-original.svg" width="40"> **GCP Cloud NAT / VPC** | Outbound IP 고정 및 Serverless VPC Access를 통한 네트워크 제어 |
 | **Trading API** | <img src="https://github.com/user-attachments/assets/842e5710-e6ae-48c1-9fd4-c29987ba6ac1" width="40"> **Upbit Open API** | KRW 마켓 전용 실시간 시세 조회 및 주문 실행 |
 | **Interface** | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/slack/slack-original.svg" width="40"> **Slack** | Slash Command 및 Interactive Button 기반 사용자 승인 인터페이스 |
+| **Monitoring** | <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLWDtx5z9M7IvlZGU0I3h2_AiaA3kTBDrTaQ&s" width="40"> **ELK Stack** | 운영 DB와 격리된 별도 리전에서 로그 수집(Logstash), 저장(Elasticsearch), 시각화(Kibana) 수행 |
 
 <br>
 <a name="tech-selection"></a>
@@ -172,6 +173,15 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 - **VPC / Cloud NAT**로 네트워크 통제 및 Outbound IP 고정
 
 > GCP는 “안전하게 숨기고(Secret/VPC)”, “안정적으로 돌리고(Cloud Run/Cloud SQL)”, “운영 부담을 줄이는(Serverless)” 방향의 선택이었다.
+
+#### 📊 ELK Stack 선택 이유
+
+- **Data DR**
+  - 매수/매도를 담당하는 n8n 서버가 재해로 중단되더라도, 매매 이력과 로그는 안전하게 생존해야 원인 분석이 가능하기 때문에 n8n 서버와 별도의 region에 모니터링을 담당하는 ELK 서버를 구축하였다.
+ 
+ - **운영 DB 부하 분산**
+   - 대시보드 조회 쿼리가 트랜잭션 DB에 직접 부하를 주지 않도록, Logstash 데이터를 동기화하고 Elasticsearch에서 조회하는 CQRS 패턴을 일부 적용
+
 <a name="db-schema"></a>
 
 ### 4.2 🗄️ 데이터베이스 스키마 (Database Schema)
@@ -468,6 +478,19 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 - 최소 주문금액 5,000원 규칙을 반영해 **불필요한 주문 실패를 사전에 차단**
 - 수동 매수/매도도 감지하여 **운영 중 발생하는 예외 흐름을 흡수**
 
+### 6.4 📊 데이터 파이프라인 및 대시보드
+
+#### 🔄 데이터 흐름
+1. **PostgreSQL** (Source): orders(주문 내역), positions(자산 변동) 테이블에 데이터 적재
+2. **Logstash** (Shipper): JDBC Input Plugin을 통해 1분 주기로 증분 데이터(Orders)와 스냅샷(Positions) 수집
+3. **Elasticsearch** (Storage): 시계열 인덱스(orders-YYYY.MM.dd) 형태로 데이터 저장 및 검색 최적화
+4. **Kibana** (Visualization): 저장된 데이터를 기반으로 실시간 차트 렌더링
+
+#### 📈 주요 대시보드 지표
+- Profit & Loss Chart: 시간대별 자산 가치 변동 추이 (수익률 그래프)
+- Trading Volume: 봇의 시간대별 활동성(주문 빈도) 및 매수/매도 비율 분석
+- Asset Composition: 현재 보유 중인 포트폴리오 비중 (Pie Chart)
+
 ---
 <a name="troubleshooting"></a>
 
@@ -541,3 +564,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 |  | **Chat Memory** | Conversation Memory | 이전 대화를 저장해 문맥을 유지하는 메모리 구조 |
 | **운영** | **Outbound IP** | Outbound IP | 외부 서비스로 요청을 보낼 때 사용되는 서버의 IP 주소 |
 |  | **Replay** | Replay | 과거 데이터/로그를 기반으로 동일한 흐름을 다시 실행·분석하는 것 |
+| **Monitoring** | **ELK** | Elasticsearch, Logstash, Kibana | 로그 수집, 검색, 시각화를 위한 오픈소스 스택 |
+|  | **Data DR** | Data Disaster Recovery | 서비스 중단 시에도 데이터의 생존과 복구를 보장하기 위한 전략 |
+|  | **Observability** | 관측 가능성 | 시스템의 출력을 통해 내부 상태를 얼마나 잘 이해할 수 있는지를 나타내는 척도 |
+|  | **CQRS** | Command Query Responsibility Segregation | 데이터 저장(명령)과 조회(쿼리)의 책임을 분리하는 아키텍처 패턴 |
