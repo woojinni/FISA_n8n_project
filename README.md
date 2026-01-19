@@ -32,6 +32,7 @@
   
 
 <a name="team"></a>
+
 ## 1. 👤 팀원 소개 (Team Members)
 
 | <img src="https://github.com/minchaeki.png" width="150"> | <img src="https://github.com/YongwanJoo.png" width="150"> | <img src="https://github.com/woojinni.png" width="150"> | 
@@ -41,6 +42,7 @@
 
 <br>
 <a name="n8n"></a>
+
 ## 2. ⚙️ n8n 소개 (Workflow Automation Engine)
 
 <img width="620" height="220" alt="images" src="https://github.com/user-attachments/assets/f64e48be-60be-486f-ad32-fcf5e68e762a" />
@@ -51,6 +53,7 @@
 n8n은 **노드(Node) 기반 시각적 워크플로우 자동화 플랫폼**으로,  
 API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 코드와 GUI를 혼합해 유연하게 설계할 수 있다.
 <a name="n8n-role"></a>
+
 ### 2.1 🔹 프로젝트 내에서의 역할
 
 본 시스템에서 n8n은 단순 자동화 도구가 아니라  
@@ -67,6 +70,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 
 <br>
 <a name="background"></a>
+
 ## 3. 💡 주제 선정 배경 – 가상자산 자동 매매 파이프라인 (Project Background: Crypto Auto-Trading Pipeline)
 
 본 프로젝트는 **가상자산 트레이딩에 대한 개인적인 관심**에서 출발하였다.  
@@ -78,6 +82,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 라는 질문으로 자연스럽게 이어졌고,  
 그 해답으로 **자동 매매 시스템**을 주제로 선택하게 되었다.
 <a name="market"></a>
+
 ## 3.1 📊 시장 분석 및 전략적 접근
 
 가상자산 시장은 다음과 같은 특징을 지닌다.
@@ -88,6 +93,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 
 이라는 점에서 **자동화·이벤트 기반 시스템을 설계하기에 매우 적합한 도메인**이다.
 <a name="limitations"></a>
+
 ## 3.2 📉 시장 분석: 기존 솔루션의 한계와 대안
 
 개인 투자자가 접근 가능한 기존 자동 매매 환경은 **편의성(SaaS)과 자유도(Custom Script)** 사이에서 양극화되어 있다. 본 프로젝트는 이 두 방식의 구조적 한계를 극복하기 위해 시작되었다.
@@ -113,6 +119,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 <br>
 
 <a name="architecture"></a>
+
 ## 4. 🏗️ 시스템 구축 환경 (System Architecture Stack)
 
 본 시스템은 **Zero Trust Architecture(ZTA)** 보안 원칙과  
@@ -133,6 +140,7 @@ API 호출 · 데이터 가공 · 조건 분기 · 외부 서비스 연동을 �
 
 <br>
 <a name="tech-selection"></a>
+
 ### 4.1 ✅ 기술 선택 이유 
 
 본 프로젝트는 “자동 매매”라는 도메인 특성상 **실시간성 + 안정성 + 감사 가능성(Traceability)** 을 요구한다.
@@ -165,6 +173,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 > GCP는 “안전하게 숨기고(Secret/VPC)”, “안정적으로 돌리고(Cloud Run/Cloud SQL)”, “운영 부담을 줄이는(Serverless)” 방향의 선택이었다.
 <a name="db-schema"></a>
+
 ### 4.2 🗄️ 데이터베이스 스키마 (Database Schema)
 
 | 구성 |
@@ -229,6 +238,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 | `status` | STRING | 체결 상태 (FILLED, NEW, CANCELED 등) |
 
 <a name="env"></a>
+
 ## 5. ⚙️ 운영 환경 변수 설정 (Runtime Environment Configuration)
 
 본 시스템은 GCP(Google Cloud Platform) 인프라를 기반으로 보안성과 확장성을 최우선으로 설계되었다.
@@ -239,6 +249,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 <a name="env-summary"></a>
+
 ### 5.1 🔑 주요 환경 변수 요약
 
 | 구분 | 환경 변수 | 설명 |
@@ -261,6 +272,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 <a name="secret-manager"></a>
+
 ### 5.2 🔐 Secret Manager 연동 항목
 
 | Secret 이름 | 사용 목적 |
@@ -275,6 +287,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 <a name="workflow"></a>
+
 ## 6. 🔄 핵심 워크플로우 설계 (Core Workflow Design)
 
 본 시스템은 기능 단위로 분리된 다수의 n8n 워크플로우를 통해
@@ -282,6 +295,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 ---
 <a name="chatbot"></a>
+
 ### 6.1 💬 AI 기반 트레이딩 챗봇 워크플로우  
 
 | 구성 |
@@ -313,6 +327,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 <a name="draft-overview"></a>
+
 ### 6.2 📄 투자 제안 생성 워크플로우  
 
 본 워크플로우는 **투자 제안서(Draft)를 생성하고 사용자에게 전달**하기까지의 과정을 담당한다.  
@@ -320,7 +335,8 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 각각은 명확한 역할을 가진다.
 
 ---
-<a name="draft-workflow"></a>
+
+
 ### 📊 워크플로우 구성 개요
 
 | 구분 | 역할 |
@@ -389,6 +405,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 <a name="position-monitoring"></a>
+
 ### 6.3 ⏱️ 포지션 감시 및 하이브리드 청산 워크플로우  
 
 | 구성 |
@@ -453,6 +470,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 <a name="troubleshooting"></a>
+
 ## 7. 🚨 트러블슈팅 (Troubleshooting)
 
 ## 🛠️ TradingBot 프로젝트 트러블슈팅 요약
@@ -466,7 +484,9 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 | **주문 로직 오류** | Slack은 “손절 완료”, 실제 계좌에는 코인 잔존 (유령 매도) | **업비트 최소 주문 금액(5,000원)** 미달 주문 거절을 확인하지 않고 DB 상태만 변경 | `OrderValue = price × qty` 검증 후 5,000원 미만이면 `KEEP` 유지 + 수동 매도 알림 |
 | **워크플로우 중단** | DB에 감시 종목 없을 때 전체 플로우 중단 | n8n은 **노드 결과가 없으면(No output)** 워크플로우 중단 | DB 조회 노드에 **Always Output Data** 옵션 활성화 |
 | **인터페이스/알림** | Slack 메시지에 종목명·평단가·수량이 빈칸 | `upbit market` 노드가 이전 DB 데이터를 **덮어씀** | 최종 Code Node에서 `$("Item Lists(activePositions)").item.json`로 이전 노드 데이터 명시적 참조 |
+
 <a name="future"></a>
+
 ## 8. 🚀 한계 및 향후 개선 사항 (Limitations & Future Improvements)
 
 <img width="1024" height="565" alt="image" src="https://github.com/user-attachments/assets/14d1307d-fbcc-46aa-90cf-9071f9b1b808" />
@@ -478,7 +498,9 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 ### 🛠️ 주요 개선 계획
 * **손실 데이터 학습:** 매매 결과를 기록하고 손실이 컸던 종목은 추천에서 제외하도록 로직을 개선한다.
 * **웹 관리 페이지:** 자산 변동 추이를 차트로 확인하고 시스템을 직접 조작할 수 있는 전용 웹사이트를 만든다.
+  
 <a name="glossary"></a>
+
 ## 9. 📖 용어 사전 (Glossary)
 
 ## 📘 용어 사전 
