@@ -16,13 +16,13 @@
   * [3.1 📊 시장 분석 및 전략적 접근](#market)
   * [3.2 📉 기존 솔루션의 한계와 대안](#limitations)
 * [4. 🏗️ 시스템 구축 환경](#architecture)
-  * [4.1  ✅ 기술 선택 이유](#tech-selection)
+  * [4.1 ✅ 기술 선택 이유](#tech-selection)
   * [4.2 🗄️ 데이터베이스 스키마](#db-schema)
 * [5. ⚙️ 운영 환경 변수 설정](#env)
   * [5.1  🔑 주요 환경 변수 요약](#env-summary)
   * [5.2 🔐 Secret Manager 연동 항목](#secret-manager)
 * [6. 🔄 핵심 워크플로우 설계](#workflow)
-  * [6.1  💬 AI 기반 트레이딩 챗봇 워크플로우](#chatbot)
+  * [6.1 💬 AI 기반 트레이딩 챗봇 워크플로우](#chatbot)
   * [6.2 📄 투자 제안 생성 워크플로우](#draft-overview)
   * [6.3 ⏱️ 포지션 감시 및 하이브리드 청산 워크플로우](#position-monitoring)
 * [7. 🚨 트러블슈팅](#troubleshooting)
@@ -321,7 +321,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 ---
 <a name="draft-workflow"></a>
-#### 6.2.1 워크플로우 구성 개요
+### 📊 워크플로우 구성 개요
 
 | 구분 | 역할 |
 |---|---|
