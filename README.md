@@ -448,7 +448,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="1088" height="509" alt="image" src="https://github.com/user-attachments/assets/49ba24ac-5f72-41c1-b677-2a6068f5e960" />  |
+| <img width="1088" height="600" alt="image" src="https://github.com/user-attachments/assets/693f4a6b-888c-41b7-92bc-1e3a08e6e588" />  |
 
 본 워크플로우는 **1분 주기로 업비트 실제 잔고와 DB 장부를 동기화(Sync)** 하며,  
 **자동 매매 포지션은 TP/SL 조건에 따라 청산**하고,  
