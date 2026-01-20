@@ -188,7 +188,7 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 
 | 구성 |
 |---|
-| <img width="890" height="1024" alt="image" src="https://github.com/user-attachments/assets/ba244a0a-fd50-4768-9cdf-aa8c7578c7ec" />|
+| <img width="890" height="1024" alt="image" src="https://github.com/user-attachments/assets/8e73e8a4-6c4b-4583-94cb-ae1e2534a648" />|
 
 
 본 시스템은 **FSM 기반 상태 관리**와 실제 거래 환경의 불확실성(부분 체결, 취소 등)을 고려하여  
@@ -247,6 +247,35 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 | `exchange_order_id` | STRING | 업비트 발급 주문 UUID |
 | `status` | STRING | 체결 상태 (FILLED, NEW, CANCELED 등) |
 
+---
+
+#### 📊 `kibana_profit` (수익/성과 시각화용 테이블)
+
+본 시스템은 거래 결과를 **운영 관점에서 빠르게 관찰(Observability)** 하기 위해  
+Kibana 대시보드 연동을 전제로 **성과 집계 전용 테이블을 별도로 분리**하였다.
+
+`orders`, `positions` 테이블은 “주문/상태 관리” 목적의 **정규화된 장부(FSM 중심)** 구조이기 때문에,  
+시각화에 필요한 지표(수익률, 손익, 청산 시각 등)를 매번 조인/연산하면  
+대시보드 성능과 유지보수 측면에서 부담이 커질 수 있다.
+
+따라서 `kibana_profit`은 **청산 이벤트가 확정되는 시점에만 기록**되는 “결과 스냅샷 테이블”로 설계되었으며,  
+Kibana에서는 해당 테이블을 기반으로 **승률, 누적 손익, 종목별 성과, 시간대별 수익 추이** 등을 시각화한다.
+
+| 컬럼명 | 타입 | 설명 |
+|---|---|---|
+| `id` | PK (INT) | 성과 레코드 일련번호 |
+| `symbol` | STRING | 종목 코드 (예: KRW-AXS) |
+| `action` | STRING | 청산 유형 (예: `SELL_PROFIT`, `SELL_LOSS`) |
+| `entry_price` | NUMERIC | 진입 가격(평단가) |
+| `exit_price` | NUMERIC | 청산 가격 |
+| `qty` | NUMERIC | 청산 수량 |
+| `profit_amount` | NUMERIC | 실현 손익(원화 기준) |
+| `profit_pct` | NUMERIC | 실현 수익률(%) |
+| `version_id` | STRING | 연결된 제안서/전략 버전 식별자 |
+| `closed_at` | TIMESTAMP | 청산 완료 시각 |
+
+<br>
+
 <a name="env"></a>
 
 ## 5. ⚙️ 운영 환경 변수 설정 (Runtime Environment Configuration)
@@ -257,7 +286,6 @@ GCP는 아래 요구사항을 가장 적은 운영 부담으로 만족시켰다.
 특히 API Key, DB 비밀번호 등 민감 정보는  
 컨테이너 내부에 직접 포함하지 않고 **GCP Secret Manager**를 통해 런타임에 주입된다.
 
----
 <a name="env-summary"></a>
 
 ### 5.1 🔑 주요 환경 변수 요약
