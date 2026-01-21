@@ -519,6 +519,9 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 - Trading Volume: 봇의 시간대별 활동성(주문 빈도) 및 매수/매도 비율 분석
 - Asset Composition: 현재 보유 중인 포트폴리오 비중 (Pie Chart)
 
+<img width="2808" height="1294" alt="image" src="https://github.com/user-attachments/assets/47a207a4-fc8c-44df-a94f-b13c5e425f5e" />
+
+
 ---
 <a name="troubleshooting"></a>
 
