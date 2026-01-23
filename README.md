@@ -338,7 +338,7 @@ Kibana에서는 해당 테이블을 기반으로 **승률, 누적 손익, 종목
 
 | 구성 |
 |---|
-| <img width="680" height="450" alt="image" src="https://github.com/user-attachments/assets/f503e996-f18b-4585-83b6-776abc318aa3" /> |
+| <img width="1289" height="926" alt="gpt 워크플로우" src="https://github.com/user-attachments/assets/d9a9dde9-96a9-4a0a-9d1f-c19edf9a1b96" />|
 
 
 #### 🎯 목적
@@ -388,7 +388,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="900" height="800" alt="image" src="https://github.com/user-attachments/assets/3bbec077-0d9f-42c1-99a1-088ec0c8eec0" /> |
+| <img width="1248" height="846" alt="워크플로우1" src="https://github.com/user-attachments/assets/55ae9ae5-1514-4ffc-8f4c-41f0fba99893" /> |
 
 #### 🎯 목적
 사용자의 입력값을 기반으로  
@@ -414,7 +414,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="1200" height="900" alt="image" src="https://github.com/user-attachments/assets/42efca9b-9e12-45fd-988d-796f49c53cb9" />|
+| <img width="1200" height="900" alt="워크플로우2" src="https://github.com/user-attachments/assets/4c898aec-784a-46dc-be34-7c27edfccc01" />|
 
 #### 🎯 목적
 사용자의 승인/거절 액션을 처리하고,  
@@ -448,7 +448,7 @@ Slack을 통해 사용자와 **자연어 기반으로 상호작용**하며,
 
 | 구성 |
 |---|
-| <img width="1088" height="600" alt="image" src="https://github.com/user-attachments/assets/693f4a6b-888c-41b7-92bc-1e3a08e6e588" />  |
+| <img width="2213" height="1011" alt="워크플로우3" src="https://github.com/user-attachments/assets/401331f4-a88c-4e06-ac2f-e494d499810d" /> |
 
 본 워크플로우는 **1분 주기로 업비트 실제 잔고와 DB 장부를 동기화(Sync)** 하며,  
 **자동 매매 포지션은 TP/SL 조건에 따라 청산**하고,  
